@@ -7,36 +7,16 @@ import java.util.ArrayList;
 public class MarkdownParse {
     public static ArrayList<String> getLinks(String markdown) {
         ArrayList<String> toReturn = new ArrayList<>();
-        ArrayList<Integer> openParenIndexes = new ArrayList<>();
-        //String[] markdownSplit = markdown.split("[");
-
-        // find the next [, then find the ], then find the (, then take up to
-        // the next )
-
-        for (int i = markdown.length(); i > -1; i--) {
-            int closeParen = markdown.lastIndexOf(")");
-            if 
+        String[] lines = markdown.split(System.getProperty("line.separator"));
+        for (int i=0; i < lines.length; i++) {
+            String thisLine = lines[i];
+            int openParen = thisLine.lastIndexOf("(");
+            for (int j = lines[i].length(); j > -1; j--) {
+                if (j == openParen) {
+                    toReturn.add(lines[i].substring(j+1, lines[i].length()-1));
+                }
+            }
         }
-
-        /*
-        int currentIndex = 0;
-        while(currentIndex < markdown.lastIndexOf("(")) {
-            int openParenIndex = markdown.indexOf("(", currentIndex);
-            openParenIndexes.add(openParenIndex);
-            currentIndex = openParenIndex + 1;
-        }
-        System.out.println(openParenIndexes);
-        System.out.println(markdown.charAt(3));
-        
-        while(currentIndex < markdown.length()) {
-            int nextOpenBracket = markdown.indexOf("[", currentIndex);
-            int nextCloseBracket = markdown.indexOf("]", nextOpenBracket);
-            int openParen = markdown.indexOf("(", nextCloseBracket);
-            int closeParen = markdown.indexOf(")", openParen);
-            toReturn.add(markdown.substring(openParen + 1, closeParen));
-            currentIndex = closeParen + 1;
-        }
-        */
         return toReturn;
     }
     public static void main(String[] args) throws IOException {
